@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Jazz by Minh Tuan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold:   #c9a84c;
+      --gold2:  #e8c97a;
+      --cream:  #f5efe2;
+      --ink:    #12100e;
+      --ink2:   #1e1b17;
+      --smoke:  #2e2a24;
+      --muted:  #7a7060;
+      --accent: #b03a2e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+      z-index: 999;
+      opacity: .45;
+    }
+
+    /* ══════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════ */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 240px;
+      height: 100vh;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      padding: 2rem 0;
+      background: linear-gradient(to right, rgba(18,16,14,.98), rgba(18,16,14,.7));
+      border-right: 1px solid rgba(201,168,76,.1);
+      backdrop-filter: blur(8px);
+      transition: transform .4s ease;
+    }
+    #sidebar .inner { width: 100%; padding: 0 2rem; }
+
+    /* Logo */
+    .sidebar-logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 2rem;
+      color: var(--gold);
+      letter-spacing: .04em;
+      display: block;
+      margin-bottom: 3rem;
+      text-decoration: none;
+    }
+    .sidebar-logo span {
+      display: block;
+      font-size: .65rem;
+      font-style: normal;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      margin-top: .25rem;
+    }
+
+    /* Nav links */
+    #sidebar nav ul { list-style: none; display: flex; flex-direction: column; gap: .25rem; }
+    #sidebar nav ul li a {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .65rem .75rem;
+      color: rgba(245,239,226,.55);
+      text-decoration: none;
+      font-size: .82rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      transition: all .25s;
+      position: relative;
+    }
+    #sidebar nav ul li a::before {
+      content: '';
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width .3s;
+    }
+    #sidebar nav ul li a:hover {
+      color: var(--gold);
+      background: rgba(201,168,76,.06);
+    }
+    #sidebar nav ul li a:hover::before { width: 14px; }
+
+    /* Sidebar footer */
+    .sidebar-footer {
+      position: absolute;
+      bottom: 2rem;
+      left: 0; right: 0;
+      padding: 0 2rem;
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: .05em;
+    }
+    .sidebar-footer a { color: var(--gold); text-decoration: none; }
+
+    /* Hamburger for mobile */
+    .hamburger {
+      display: none;
+      position: fixed;
+      top: 1.25rem; left: 1.25rem;
+      z-index: 300;
+      background: rgba(18,16,14,.9);
+      border: 1px solid rgba(201,168,76,.3);
+      border-radius: 6px;
+      width: 42px; height: 42px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .hamburger span {
+      display: block;
+      width: 20px; height: 1.5px;
+      background: var(--gold);
+      transition: all .3s;
+    }
+    .sidebar-open #sidebar { transform: translateX(0); }
+
+    /* ══════════════════════════════════════
+       WRAPPER (offset for sidebar)
+    ══════════════════════════════════════ */
+    #wrapper {
+      margin-left: 240px;
+    }
+
+    /* ══════════════════════════════════════
+       INTRO / HERO
+    ══════════════════════════════════════ */
+    #intro {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(ellipse 80% 60% at 40% 50%, #2a1f0e 0%, var(--ink) 65%);
+    }
+    .hero-ornament {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,.1);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      animation: pulse 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .hero-ornament:nth-child(1) { width: 460px; height: 460px; }
+    .hero-ornament:nth-child(2) { width: 660px; height: 660px; animation-delay: 2s; }
+    .hero-ornament:nth-child(3) { width: 860px; height: 860px; animation-delay: 4s; }
+    @keyframes pulse {
+      0%,100% { opacity: .4; transform: translate(-50%,-50%) scale(1); }
+      50% { opacity: .9; transform: translate(-50%,-50%) scale(1.03); }
+    }
+    .intro-inner {
+      position: relative;
+      z-index: 2;
+      padding: 4rem 5rem;
+      text-align: left;
+      max-width: 800px;
+    }
+    .intro-label {
+      font-size: .72rem;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    #intro h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(5rem, 10vw, 10rem);
+      font-weight: 900;
+      line-height: .95;
+      letter-spacing: -.02em;
+    }
+    #intro h1 em {
+      display: block;
+      font-style: italic;
+      color: var(--gold);
+      font-size: .55em;
+    }
+    .intro-quote {
+      margin-top: 2rem;
+      max-width: 480px;
+      color: rgba(245,239,226,.6);
+      font-size: 1.05rem;
+      font-style: italic;
+      border-left: 2px solid var(--gold);
+      padding-left: 1.25rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      margin-top: 2.5rem;
+      padding: .85rem 2rem;
+      border: 1px solid rgba(201,168,76,.5);
+      color: var(--gold);
+      text-decoration: none;
+      font-size: .8rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      transition: all .3s;
+      background: transparent;
+    }
+    .btn:hover {
+      background: rgba(201,168,76,.12);
+      border-color: var(--gold);
+    }
+    .btn::after { content: '↓'; transition: transform .3s; }
+    .btn:hover::after { transform: translateY(3px); }
+
+    /* ══════════════════════════════════════
+       SPOTLIGHTS (General Info)
+    ══════════════════════════════════════ */
+    #one { background: var(--ink2); }
+
+    .spotlights-header {
+      padding: 5rem 5rem 0;
+    }
+    .section-label {
+      font-size: .72rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .5rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      font-weight: 700;
+      margin-bottom: 0;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    .spotlights { display: flex; flex-direction: column; }
+
+    .spotlight {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 420px;
+      overflow: hidden;
+      border-top: 1px solid rgba(201,168,76,.1);
+    }
+    .spotlight:nth-child(even) { direction: rtl; }
+    .spotlight:nth-child(even) > * { direction: ltr; }
+
+    .spotlight-img {
+      position: relative;
+      overflow: hidden;
+      background: var(--smoke);
+    }
+    .spotlight-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(.55) sepia(.3);
+      transition: transform .8s ease, filter .5s;
+    }
+    .spotlight:hover .spotlight-img img {
+      transform: scale(1.04);
+      filter: brightness(.7) sepia(.15);
+    }
+    .spotlight-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201,168,76,.08) 0%, transparent 60%);
+    }
+
+    /* Placeholder gradient backgrounds when no image */
+    .spotlight-img.bg1 { background: radial-gradient(ellipse at 40% 60%, #2a1a05, #0d0b08); }
+    .spotlight-img.bg2 { background: radial-gradient(ellipse at 60% 40%, #051520, #080d12); }
+    .spotlight-img.bg3 { background: radial-gradient(ellipse at 50% 50%, #120a18, #0a0810); }
+
+    .spotlight-content {
+      display: flex;
+      align-items: center;
+      padding: 4rem 5rem;
+    }
+    .spotlight-content-inner { max-width: 420px; }
+    .spotlight-num {
+      font-size: .65rem;
+      letter-spacing: .25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+    }
+    .spotlight-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .spotlight-content p {
+      color: rgba(245,239,226,.65);
+      font-size: .95rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.75;
+    }
+
+    /* SVG Instrument fills for placeholder images */
+    .instrument-svg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: .2;
+    }
+    .instrument-svg svg { width: 60%; height: 60%; }
+
+    /* ══════════════════════════════════════
+       SECTION TWO – Elements & Diversity
+    ══════════════════════════════════════ */
+    #two {
+      background: linear-gradient(to bottom, var(--ink) 0%, var(--ink2) 50%, var(--ink) 100%);
+      padding: 6rem 5rem;
+    }
+    #two .section-intro { max-width: 640px; margin-bottom: 3.5rem; }
+    #two .section-intro p {
+      margin-top: 1rem;
+      color: rgba(245,239,226,.6);
+      font-size: 1rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: rgba(201,168,76,.06);
+      border: 1px solid rgba(201,168,76,.1);
+      margin-bottom: 3rem;
+    }
+    .feature-card {
+      background: var(--ink2);
+      padding: 2.5rem 2rem;
+      transition: background .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s ease;
+    }
+    .feature-card:hover { background: #232018; }
+    .feature-card:hover::after { transform: scaleX(1); }
+    .feature-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .feature-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      margin-bottom: .6rem;
+      color: var(--gold2);
+    }
+    .feature-card p {
+      font-size: .88rem;
+      color: rgba(245,239,226,.58);
+      line-height: 1.7;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION THREE – Contact
+    ══════════════════════════════════════ */
+    #three {
+      background: var(--ink2);
+      padding: 6rem 5rem;
+      border-top: 1px solid rgba(201,168,76,.1);
+    }
+    #three .section-intro { max-width: 560px; margin-bottom: 3.5rem; }
+    #three .section-intro p {
+      margin-top: 1rem;
+      color: rgba(245,239,226,.6);
+    }
+
+    .contact-split {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    /* Form */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-field { display: flex; flex-direction: column; gap: .4rem; }
+    .form-field.full { grid-column: 1 / -1; }
+    .form-field label {
+      font-size: .7rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .form-field input,
+    .form-field textarea {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(201,168,76,.2);
+      color: var(--cream);
+      padding: .75rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color .25s;
+      resize: none;
+    }
+    .form-field input:focus,
+    .form-field textarea:focus { border-color: var(--gold); }
+    .form-field textarea { height: 130px; }
+    .btn-submit {
+      margin-top: 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .85rem 2rem;
+      background: transparent;
+      border: 1px solid rgba(201,168,76,.5);
+      color: var(--gold);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .78rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .3s;
+    }
+    .btn-submit:hover { background: rgba(201,168,76,.1); border-color: var(--gold); }
+
+    /* Contact info */
+    .contact-info { display: flex; flex-direction: column; gap: 2rem; }
+    .contact-block { }
+    .contact-block h4 {
+      font-size: .65rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .5rem;
+    }
+    .contact-block p, .contact-block a {
+      color: rgba(245,239,226,.65);
+      font-size: .9rem;
+      line-height: 1.7;
+      text-decoration: none;
+    }
+    .contact-block a:hover { color: var(--gold); }
+    .contact-divider {
+      width: 40px; height: 1px;
+      background: rgba(201,168,76,.3);
+    }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      padding: 2rem 5rem;
+      border-top: 1px solid rgba(201,168,76,.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: .75rem;
+      color: var(--muted);
+      letter-spacing: .05em;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ══════════════════════════════════════
+       DIVIDER
+    ══════════════════════════════════════ */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      opacity: .2;
+    }
+
+    /* ══════════════════════════════════════
+       SCROLL ANIMATIONS
+    ══════════════════════════════════════ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      #sidebar { transform: translateX(-100%); }
+      .hamburger { display: flex; }
+      #wrapper { margin-left: 0; }
+      .spotlight { grid-template-columns: 1fr; min-height: auto; }
+      .spotlight:nth-child(even) { direction: ltr; }
+      .spotlight-img { height: 260px; }
+      .spotlights-header, #two, #three, footer { padding-left: 2rem; padding-right: 2rem; }
+      .intro-inner { padding: 4rem 2rem; }
+      .spotlight-content { padding: 2.5rem 2rem; }
+      .features { grid-template-columns: repeat(2, 1fr); }
+      .contact-split { grid-template-columns: 1fr; gap: 3rem; }
+    }
+    @media (max-width: 600px) {
+      .features { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HAMBURGER ── -->
+<button class="hamburger" id="hamburger" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- ── SIDEBAR ── -->
+<section id="sidebar">
+  <div class="inner">
+    <a href="#intro" class="sidebar-logo">Jazz<span>by Minh Tuan</span></a>
+    <nav>
+      <ul>
+        <li><a href="#intro">♩ Jazz</a></li>
+        <li><a href="#one">♩ General Information</a></li>
+        <li><a href="#two">♩ Elements &amp; Diversity</a></li>
+        <li><a href="#three">♩ Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="sidebar-footer">
+    &copy; Jazz by <a href="https://www.facebook.com/mhtuan.244/">Minh Tuan</a>
+  </div>
+</section>
+
+<!-- ── WRAPPER ── -->
+<div id="wrapper">
+
+  <!-- INTRO -->
+  <section id="intro">
+    <div class="hero-ornament"></div>
+    <div class="hero-ornament"></div>
+    <div class="hero-ornament"></div>
+    <div class="intro-inner">
+      <p class="intro-label">America's Original Art Form</p>
+      <h1>JAZZ<em>Feel the Sound</em></h1>
+      <p class="intro-quote">"Jazz washes away the dust of everyday life" – Art Blakey</p>
+      <a href="#one" class="btn">Learn more</a>
+    </div>
+  </section>
+
+  <!-- ONE: GENERAL INFORMATION -->
+  <section id="one">
+    <div class="spotlights-header fade-in">
+      <p class="section-label">Explore</p>
+      <h2 class="section-title">General <em>Information</em></h2>
+    </div>
+
+    <div class="spotlights">
+
+      <!-- History -->
+      <div class="spotlight fade-in">
+        <div class="spotlight-img bg1">
+          <div class="instrument-svg">
+            <svg viewBox="0 0 200 300" fill="rgba(201,168,76,1)" xmlns="http://www.w3.org/2000/svg">
+              <rect x="90" y="10" width="20" height="70" rx="10"/>
+              <path d="M100 80 Q145 130 145 200 Q145 270 90 290 Q70 298 65 285 Q65 260 90 240 Q115 215 115 200 Q115 145 75 105 Z"/>
+              <ellipse cx="75" cy="280" rx="22" ry="12"/>
+            </svg>
+          </div>
+          <div class="spotlight-img-overlay"></div>
+        </div>
+        <div class="spotlight-content">
+          <div class="spotlight-content-inner">
+            <p class="spotlight-num">01 / 03</p>
+            <h2>History of Jazz</h2>
+            <p>History of formation and development — from the cultural melting pot of New Orleans to the global stages of the 21st century.</p>
+            <a href="history.html" class="btn">Learn more</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Definition -->
+      <div class="spotlight fade-in">
+        <div class="spotlight-img bg2">
+          <div class="instrument-svg">
+            <svg viewBox="0 0 200 300" fill="rgba(201,168,76,1)" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="100" cy="40" rx="16" ry="35"/>
+              <rect x="84" y="74" width="32" height="140"/>
+              <ellipse cx="100" cy="230" rx="55" ry="22"/>
+              <rect x="45" y="218" width="110" height="22" rx="11"/>
+              <ellipse cx="100" cy="252" rx="75" ry="30"/>
+            </svg>
+          </div>
+          <div class="spotlight-img-overlay"></div>
+        </div>
+        <div class="spotlight-content">
+          <div class="spotlight-content-inner">
+            <p class="spotlight-num">02 / 03</p>
+            <h2>Definition</h2>
+            <p>Music that includes qualities such as swing, improvisation, group interaction, developing an individual voice, and being open to different musical possibilities.</p>
+            <a href="definition.html" class="btn">Learn more</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elements & Diversity -->
+      <div class="spotlight fade-in">
+        <div class="spotlight-img bg3">
+          <div class="instrument-svg">
+            <svg viewBox="0 0 200 300" fill="rgba(201,168,76,1)" xmlns="http://www.w3.org/2000/svg">
+              <rect x="20" y="80" width="160" height="160" rx="5"/>
+              <rect x="20" y="80" width="160" height="110" rx="5" fill="rgba(201,168,76,0.15)"/>
+              <rect x="42" y="80" width="13" height="74" rx="3" fill="#0a0810"/>
+              <rect x="70" y="80" width="13" height="74" rx="3" fill="#0a0810"/>
+              <rect x="110" y="80" width="13" height="74" rx="3" fill="#0a0810"/>
+              <rect x="138" y="80" width="13" height="74" rx="3" fill="#0a0810"/>
+              <rect x="164" y="80" width="13" height="74" rx="3" fill="#0a0810"/>
+            </svg>
+          </div>
+          <div class="spotlight-img-overlay"></div>
+        </div>
+        <div class="spotlight-content">
+          <div class="spotlight-content-inner">
+            <p class="spotlight-num">03 / 03</p>
+            <h2>Elements & Diversity</h2>
+            <p>The vibrant 1920s cultural era marked by the explosion of jazz music, rapid economic growth, and the rise of "flapper" youth culture — "the parties were bigger, the pace was faster."</p>
+            <a href="generic.html" class="btn">Learn more</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /spotlights -->
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- TWO: ELEMENTS & DIVERSITY -->
+  <section id="two">
+    <div class="section-intro fade-in">
+      <p class="section-label">What We Explore</p>
+      <h2 class="section-title">Elements &amp; <em>Diversity</em></h2>
+      <p>Jazz is a living language — built from distinct musical elements and enriched by a breathtaking diversity of styles, cultures, and eras. Every subgenre tells its own story.</p>
+    </div>
+
+    <div class="features">
+      <div class="feature-card fade-in">
+        <span class="feature-icon">🎷</span>
+        <h3>Improvisation</h3>
+        <p>The heartbeat of jazz — spontaneous composition in real time, responding to the emotional current of the moment. No two performances are identical.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <span class="feature-icon">🥁</span>
+        <h3>Syncopation &amp; Swing</h3>
+        <p>Accenting the off-beats to create irresistible rhythmic tension — the "swing" feel that compels listeners to move and musicians to interact.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <span class="feature-icon">🎹</span>
+        <h3>Extended Harmony</h3>
+        <p>Chords stretched to the 7th, 9th, and 13th degrees create lush, ambiguous color — giving jazz its sophisticated emotional complexity.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <span class="feature-icon">🎺</span>
+        <h3>Call &amp; Response</h3>
+        <p>Rooted in African tradition, a musical conversation where one phrase is "called" and another instrument "responds" — shaping collective storytelling.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <span class="feature-icon">🎵</span>
+        <h3>Polyrhythm</h3>
+        <p>Multiple rhythmic layers coexisting simultaneously — a rich, interlocking complexity borrowed from West African drumming traditions.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <span class="feature-icon">🌍</span>
+        <h3>Global Diversity</h3>
+        <p>From Dixieland to Bebop, Cool to Fusion — jazz absorbed Latin, African, Brazilian, and hip-hop influences to become a truly global tradition.</p>
+      </div>
+    </div>
+
+    <a href="https://www.youtube.com/watch?v=NFdCfLDq4Qg" class="btn" target="_blank" rel="noopener">Listen to a song ♪</a>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- THREE: CONTACT -->
+  <section id="three">
+    <div class="section-intro fade-in">
+      <p class="section-label">Get in Touch</p>
+      <h2 class="section-title">Contact <em>Us</em></h2>
+      <p>Any question or misinformation report — please reach out below.</p>
+    </div>
+
+    <div class="contact-split">
+      <div class="fade-in">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" />
+          </div>
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" />
+          </div>
+          <div class="form-field full">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Your message…"></textarea>
+          </div>
+        </div>
+        <button class="btn-submit">Send Message →</button>
+      </div>
+
+      <div class="contact-info fade-in">
+        <div class="contact-block">
+          <h4>Address</h4>
+          <p>Doi 15, Ngo Xuyen<br>Nhu Quynh, Hung Yen<br>Viet Nam</p>
+        </div>
+        <div class="contact-divider"></div>
+        <div class="contact-block">
+          <h4>Email</h4>
+          <a href="mailto:justaf2p1@gmail.com">justaf2p1@gmail.com</a>
+        </div>
+        <div class="contact-divider"></div>
+        <div class="contact-block">
+          <h4>Phone</h4>
+          <p>(084) 812-240408</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /wrapper -->
+
+<!-- FOOTER -->
+<footer>
+  <span>&copy; Untitled. All rights reserved.</span>
+  <span>Design: <a href="https://www.facebook.com/mhtuan.244/">Minh Tuan</a></span>
+</footer>
+
+<script>
+  /* Hamburger */
+  const ham = document.getElementById('hamburger');
+  ham.addEventListener('click', () => document.body.classList.toggle('sidebar-open'));
+  document.querySelectorAll('#sidebar nav a').forEach(a => {
+    a.addEventListener('click', () => document.body.classList.remove('sidebar-open'));
+  });
+
+  /* Smooth scroll for sidebar links */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  /* Fade-in on scroll */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

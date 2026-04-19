@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>History – Jazz by Minh Tuan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold:  #c9a84c;
+      --gold2: #e8c97a;
+      --cream: #f5efe2;
+      --ink:   #12100e;
+      --ink2:  #1e1b17;
+      --smoke: #2e2a24;
+      --muted: #7a7060;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* noise */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none; z-index: 999; opacity: .45;
+    }
+
+    /* ── HEADER ── */
+    #header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: linear-gradient(to bottom, rgba(18,16,14,.96), transparent);
+      backdrop-filter: blur(4px);
+    }
+    #header .title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1.6rem;
+      color: var(--gold); text-decoration: none; letter-spacing: .04em;
+    }
+    #header nav ul { list-style: none; display: flex; gap: 2rem; }
+    #header nav a {
+      color: rgba(245,239,226,.65); text-decoration: none;
+      font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+      transition: color .2s;
+    }
+    #header nav a:hover { color: var(--gold); }
+
+    /* ── HERO BANNER ── */
+    .page-hero {
+      min-height: 55vh;
+      display: flex; align-items: flex-end;
+      padding: 0 0 4rem;
+      position: relative; overflow: hidden;
+      background: radial-gradient(ellipse 90% 70% at 50% 30%, #2a1f0e 0%, var(--ink) 70%);
+    }
+    .hero-rings span {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(201,168,76,.1);
+      top: 30%; left: 50%; transform: translate(-50%, -50%);
+      animation: pulse 6s ease-in-out infinite;
+    }
+    .hero-rings span:nth-child(1) { width: 300px; height: 300px; }
+    .hero-rings span:nth-child(2) { width: 500px; height: 500px; animation-delay: 2s; }
+    .hero-rings span:nth-child(3) { width: 700px; height: 700px; animation-delay: 4s; }
+    @keyframes pulse {
+      0%,100% { opacity: .4; } 50% { opacity: .85; }
+    }
+
+    .page-hero-inner {
+      position: relative; z-index: 2;
+      max-width: 900px; margin: 0 auto; padding: 0 3rem;
+      width: 100%;
+    }
+    .breadcrumb {
+      font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.25rem;
+    }
+    .breadcrumb a { color: var(--gold); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 7vw, 6.5rem);
+      font-weight: 900; line-height: .95;
+      letter-spacing: -.02em;
+    }
+    .page-hero h1 em {
+      display: block; font-style: italic; color: var(--gold); font-size: .5em;
+      letter-spacing: 0; margin-bottom: .2em;
+    }
+    .page-hero-sub {
+      margin-top: 1.5rem; max-width: 560px;
+      color: rgba(245,239,226,.6); font-size: 1rem; font-style: italic;
+      border-left: 2px solid var(--gold); padding-left: 1.25rem;
+    }
+
+    /* ── HERO IMAGE ── */
+    .hero-image-wrap {
+      position: relative; overflow: hidden;
+      height: 420px;
+      background: linear-gradient(135deg, #1a1208, #0d0b06);
+    }
+    .hero-image-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(.6) sepia(.25);
+      display: block;
+    }
+    .hero-image-wrap::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, var(--ink) 100%);
+    }
+    /* fallback illustration if image missing */
+    .hero-image-fallback {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      opacity: .18;
+    }
+    .hero-image-fallback svg { width: 220px; height: 320px; }
+
+    /* ── CONTENT AREA ── */
+    .content-wrap {
+      max-width: 900px; margin: 0 auto; padding: 5rem 3rem 6rem;
+    }
+
+    /* Drop cap intro */
+    .intro-block {
+      font-size: 1.15rem; line-height: 1.85;
+      color: rgba(245,239,226,.82);
+      border-left: 3px solid var(--gold);
+      padding-left: 2rem;
+      margin-bottom: 4rem;
+    }
+    .intro-block::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem; font-weight: 900;
+      float: left; line-height: .8;
+      margin: .05em .15em 0 0;
+      color: var(--gold);
+    }
+
+    /* Section heading */
+    .content-section { margin-bottom: 3.5rem; }
+    .content-section-label {
+      font-size: .68rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .6rem;
+    }
+    .content-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 700; line-height: 1.2;
+      margin-bottom: 1.25rem;
+    }
+    .content-section h2 em { font-style: italic; color: var(--gold); }
+    .content-section p {
+      color: rgba(245,239,226,.68);
+      font-size: .98rem; line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+    .content-section p:last-child { margin-bottom: 0; }
+
+    /* Pull quote */
+    .pull-quote {
+      margin: 3rem 0;
+      padding: 2rem 2.5rem;
+      border: 1px solid rgba(201,168,76,.2);
+      background: rgba(201,168,76,.04);
+      position: relative;
+    }
+    .pull-quote::before {
+      content: '"';
+      font-family: 'Playfair Display', serif;
+      font-size: 6rem; line-height: .7;
+      color: var(--gold); opacity: .25;
+      position: absolute; top: 1rem; left: 1.5rem;
+    }
+    .pull-quote p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1.2rem;
+      color: rgba(245,239,226,.85) !important;
+      line-height: 1.6; position: relative; z-index: 1;
+    }
+    .pull-quote cite {
+      display: block; margin-top: .75rem;
+      font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--gold); font-style: normal;
+    }
+
+    /* Timeline dots */
+    .timeline { margin: 3rem 0; display: flex; flex-direction: column; gap: 0; }
+    .timeline-item {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 0 1.5rem; padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(201,168,76,.1);
+      opacity: 0; transform: translateX(-16px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .timeline-item.visible { opacity: 1; transform: translateX(0); }
+    .timeline-year {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 700;
+      color: var(--gold); padding-top: .1rem;
+      text-align: right; line-height: 1.4;
+    }
+    .timeline-body h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; margin-bottom: .35rem; color: var(--cream);
+    }
+    .timeline-body p {
+      font-size: .88rem; color: rgba(245,239,226,.58) !important;
+      margin: 0 !important; line-height: 1.65;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px; margin: 3.5rem 0;
+      background: linear-gradient(to right, transparent, rgba(201,168,76,.35), transparent);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 3rem;
+      border-top: 1px solid rgba(201,168,76,.1);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: .75rem; color: var(--muted); letter-spacing: .05em;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ── FADE IN ── */
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 640px) {
+      #header { padding: 1rem 1.5rem; }
+      .page-hero-inner, .content-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .hero-image-wrap { height: 260px; }
+      .timeline-item { grid-template-columns: 60px 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <a href="index.html" class="title">Jazz</a>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="hero-rings">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="page-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Home</a> &nbsp;/&nbsp; History</p>
+    <h1><em>A History of</em>Jazz</h1>
+    <p class="page-hero-sub">From New Orleans Roots to Global Phenomenon</p>
+  </div>
+</section>
+
+<!-- HERO IMAGE -->
+<div class="hero-image-wrap">
+  <img src="images/pic04.png" alt="Jazz History" onerror="this.style.display='none'" />
+  <div class="hero-image-fallback">
+    <svg viewBox="0 0 200 300" fill="rgba(201,168,76,1)" xmlns="http://www.w3.org/2000/svg">
+      <rect x="90" y="10" width="20" height="70" rx="10"/>
+      <path d="M100 80 Q145 130 145 200 Q145 270 90 290 Q70 298 65 285 Q65 260 90 240 Q115 215 115 200 Q115 145 75 105 Z"/>
+      <ellipse cx="75" cy="280" rx="22" ry="12"/>
+    </svg>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content-wrap">
+
+  <!-- Intro -->
+  <p class="intro-block fade-in">
+    Jazz is often described as America's only original art form — a genre fundamentally built on improvisation, syncopation, and a deeply emotional core. Originating in the late 19th and early 20th centuries, jazz is not merely a single style of music but a continuously evolving tree of subgenres, each reflecting the cultural, social, and political climate of its era. From the bustling streets of New Orleans to the grand concert halls of the world, the history of jazz is a testament to cultural synthesis, artistic innovation, and the enduring power of human expression.
+  </p>
+
+  <div class="divider"></div>
+
+  <!-- Section 1 -->
+  <div class="content-section fade-in">
+    <p class="content-section-label">Origins</p>
+    <h2>The Cultural Melting Pot of <em>New Orleans</em></h2>
+    <p>The story of jazz begins in New Orleans, Louisiana — a unique port city characterized by a diverse cultural tapestry. By the late 1800s, New Orleans was home to people of African, French, Spanish, Italian, and Caribbean descent. This environment fostered a unique musical cross-pollination unlike anywhere else in the world.</p>
+    <p>The foundational elements of jazz were laid by enslaved African Americans who brought with them rich rhythmic traditions, work songs, field hollers, and spirituals. On Sundays in New Orleans' Congo Square, enslaved individuals were permitted to gather, play traditional drums, and dance — keeping their African musical heritage alive in a city that would eventually share it with the world.</p>
+    <p>Over time, these African rhythmic and vocal traditions blended with European musical structures, brass band instruments left over from the Civil War, and the harmonic complexities of church hymns to produce something entirely new.</p>
+  </div>
+
+  <div class="pull-quote fade-in">
+    <p>Jazz is the big brother of the blues. If a guy's playing blues like we play, he's in high school. When he starts playing jazz, it's like going on to college, to a school of higher learning.</p>
+    <cite>— B.B. King</cite>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="content-section fade-in">
+    <p class="content-section-label">Precursors</p>
+    <h2>Ragtime &amp; the <em>Blues</em></h2>
+    <p>Two direct precursors to jazz emerged at the dawn of the 20th century: ragtime and the blues. Ragtime, popularized by figures like Scott Joplin, introduced heavily syncopated rhythms played primarily on the piano — a joyful, rhythmically complex style that set the stage for jazz's rhythmic vocabulary.</p>
+    <p>The blues, emerging from the Deep South, provided the emotional vocabulary of jazz — utilizing "blue notes" and a standard 12-bar chord progression that allowed for deep, expressive storytelling. Together, these two traditions gave early jazz its soul and its swing.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Timeline -->
+  <div class="content-section fade-in">
+    <p class="content-section-label">Timeline</p>
+    <h2>Key Moments in <em>Jazz History</em></h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">1890s</div>
+        <div class="timeline-body">
+          <h4>Early Foundations</h4>
+          <p>African rhythmic traditions, blues, and ragtime converge in New Orleans. Congo Square gatherings preserve African musical memory.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1917</div>
+        <div class="timeline-body">
+          <h4>First Jazz Recording</h4>
+          <p>The Original Dixieland Jass Band records "Livery Stable Blues" — the first commercially released jazz record, introducing the world to the sound.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1920s</div>
+        <div class="timeline-body">
+          <h4>Elements & Diversity</h4>
+          <p>Jazz spreads to Chicago and New York. Louis Armstrong, Duke Ellington, and Bessie Smith become national figures. Jazz defines an era.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1930s</div>
+        <div class="timeline-body">
+          <h4>The Swing Era</h4>
+          <p>Big bands led by Count Basie and Benny Goodman fill ballrooms. Jazz becomes America's popular music, the soundtrack to a generation.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1940s</div>
+        <div class="timeline-body">
+          <h4>Bebop Revolution</h4>
+          <p>Charlie Parker and Dizzy Gillespie create a complex, fast, intellectual style that elevates jazz to serious art music.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1959</div>
+        <div class="timeline-body">
+          <h4>Kind of Blue</h4>
+          <p>Miles Davis releases the best-selling jazz album of all time, pioneering modal jazz and opening new harmonic horizons.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">Today</div>
+        <div class="timeline-body">
+          <h4>Global Jazz</h4>
+          <p>Artists like Kamasi Washington, Robert Glasper, and Esperanza Spalding carry jazz forward, blending it with hip-hop, R&amp;B, and world music.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /content-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <span>&copy; Untitled. All rights reserved.</span>
+  <span>Design: <a href="https://www.facebook.com/mhtuan.244/">Minh Tuan</a></span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  document.querySelectorAll('.timeline-item').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.08}s`;
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>

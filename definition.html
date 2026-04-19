@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Definition – Jazz by Minh Tuan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold:  #c9a84c;
+      --gold2: #e8c97a;
+      --cream: #f5efe2;
+      --ink:   #12100e;
+      --ink2:  #1e1b17;
+      --smoke: #2e2a24;
+      --muted: #7a7060;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* noise */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none; z-index: 999; opacity: .45;
+    }
+
+    /* ── HEADER ── */
+    #header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: linear-gradient(to bottom, rgba(18,16,14,.96), transparent);
+      backdrop-filter: blur(4px);
+    }
+    #header .title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1.6rem;
+      color: var(--gold); text-decoration: none; letter-spacing: .04em;
+    }
+    #header nav ul { list-style: none; display: flex; gap: 2rem; }
+    #header nav a {
+      color: rgba(245,239,226,.65); text-decoration: none;
+      font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+      transition: color .2s;
+    }
+    #header nav a:hover { color: var(--gold); }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      min-height: 55vh;
+      display: flex; align-items: flex-end;
+      padding: 0 0 4rem;
+      position: relative; overflow: hidden;
+      background: radial-gradient(ellipse 90% 60% at 55% 35%, #1a1206 0%, var(--ink) 68%);
+    }
+    .hero-rings span {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(201,168,76,.1);
+      top: 35%; left: 55%; transform: translate(-50%, -50%);
+      animation: pulse 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .hero-rings span:nth-child(1) { width: 280px; height: 280px; }
+    .hero-rings span:nth-child(2) { width: 480px; height: 480px; animation-delay: 2s; }
+    .hero-rings span:nth-child(3) { width: 680px; height: 680px; animation-delay: 4s; }
+    @keyframes pulse {
+      0%,100% { opacity: .35; } 50% { opacity: .8; }
+    }
+
+    /* decorative large letter */
+    .hero-deco-letter {
+      position: absolute;
+      right: 6%;
+      top: 50%;
+      transform: translateY(-55%);
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(12rem, 20vw, 22rem);
+      font-weight: 900;
+      font-style: italic;
+      color: rgba(201,168,76,.06);
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .page-hero-inner {
+      position: relative; z-index: 2;
+      max-width: 900px; margin: 0 auto; padding: 0 3rem;
+      width: 100%;
+    }
+    .breadcrumb {
+      font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.25rem;
+    }
+    .breadcrumb a { color: var(--gold); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 7vw, 6.5rem);
+      font-weight: 900; line-height: .95;
+      letter-spacing: -.02em;
+    }
+    .page-hero h1 em {
+      display: block; font-style: italic;
+      color: var(--gold); font-size: .48em;
+      letter-spacing: 0; margin-bottom: .2em;
+    }
+    .page-hero-sub {
+      margin-top: 1.5rem; max-width: 520px;
+      color: rgba(245,239,226,.58); font-size: 1rem; font-style: italic;
+      border-left: 2px solid var(--gold); padding-left: 1.25rem;
+    }
+
+    /* ── HERO IMAGE ── */
+    .hero-image-wrap {
+      position: relative; overflow: hidden;
+      height: 420px;
+      background: #0d0b08;
+    }
+    .hero-image-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(.55) sepia(.25);
+      display: block;
+    }
+    .hero-image-wrap::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 35%, var(--ink) 100%);
+    }
+    .hero-image-fallback {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      opacity: .15;
+    }
+    .hero-image-fallback svg { width: 260px; height: 260px; }
+
+    /* ── THREE PILLARS ── */
+    .pillars-strip {
+      background: var(--ink2);
+      border-top: 1px solid rgba(201,168,76,.1);
+      border-bottom: 1px solid rgba(201,168,76,.1);
+    }
+    .pillars-inner {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 2px; background: rgba(201,168,76,.08);
+    }
+    .pillar {
+      background: var(--ink2);
+      padding: 2.5rem 2rem;
+      position: relative; overflow: hidden;
+      transition: background .3s;
+      opacity: 0; transform: translateY(20px);
+      transition: background .3s, opacity .6s ease, transform .6s ease;
+    }
+    .pillar.visible { opacity: 1; transform: translateY(0); }
+    .pillar:hover { background: #232018; }
+    .pillar::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s ease;
+    }
+    .pillar:hover::before { transform: scaleX(1); }
+    .pillar-num {
+      font-size: .62rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .6rem;
+    }
+    .pillar h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; margin-bottom: .6rem; color: var(--gold2);
+    }
+    .pillar p {
+      font-size: .85rem; color: rgba(245,239,226,.55); line-height: 1.7;
+    }
+
+    /* ── CONTENT ── */
+    .content-wrap {
+      max-width: 900px; margin: 0 auto; padding: 5rem 3rem 6rem;
+    }
+
+    /* drop-cap intro */
+    .intro-block {
+      font-size: 1.12rem; line-height: 1.85;
+      color: rgba(245,239,226,.82);
+      border-left: 3px solid var(--gold);
+      padding-left: 2rem;
+      margin-bottom: 4rem;
+    }
+    .intro-block::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem; font-weight: 900;
+      float: left; line-height: .8;
+      margin: .05em .15em 0 0;
+      color: var(--gold);
+    }
+
+    /* section */
+    .content-section { margin-bottom: 3.5rem; }
+    .content-section-label {
+      font-size: .68rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .5rem;
+    }
+    .content-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 700; line-height: 1.2; margin-bottom: 1.25rem;
+    }
+    .content-section h2 em { font-style: italic; color: var(--gold); }
+    .content-section p {
+      color: rgba(245,239,226,.68);
+      font-size: .98rem; line-height: 1.85; margin-bottom: 1rem;
+    }
+    .content-section p:last-child { margin-bottom: 0; }
+
+    /* pull quote */
+    .pull-quote {
+      margin: 3rem 0; padding: 2rem 2.5rem;
+      border: 1px solid rgba(201,168,76,.2);
+      background: rgba(201,168,76,.04);
+      position: relative;
+    }
+    .pull-quote::before {
+      content: '"';
+      font-family: 'Playfair Display', serif;
+      font-size: 6rem; line-height: .7;
+      color: var(--gold); opacity: .22;
+      position: absolute; top: 1rem; left: 1.5rem;
+    }
+    .pull-quote p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1.18rem;
+      color: rgba(245,239,226,.85) !important;
+      line-height: 1.6; position: relative; z-index: 1;
+    }
+    .pull-quote cite {
+      display: block; margin-top: .75rem;
+      font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--gold); font-style: normal;
+    }
+
+    /* key terms */
+    .key-terms {
+      display: grid; grid-template-columns: repeat(2,1fr);
+      gap: 1px; background: rgba(201,168,76,.08);
+      border: 1px solid rgba(201,168,76,.1);
+      margin: 2.5rem 0;
+    }
+    .key-term {
+      background: var(--ink2);
+      padding: 1.5rem 1.75rem;
+      opacity: 0; transform: translateX(-12px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .key-term.visible { opacity: 1; transform: translateX(0); }
+    .key-term dt {
+      font-family: 'Playfair Display', serif;
+      font-size: .95rem; color: var(--gold2);
+      margin-bottom: .35rem;
+    }
+    .key-term dd {
+      font-size: .85rem; color: rgba(245,239,226,.55);
+      line-height: 1.65;
+    }
+
+    /* divider */
+    .divider {
+      height: 1px; margin: 3.5rem 0;
+      background: linear-gradient(to right, transparent, rgba(201,168,76,.35), transparent);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 3rem;
+      border-top: 1px solid rgba(201,168,76,.1);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: .75rem; color: var(--muted); letter-spacing: .05em;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* fade */
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 700px) {
+      #header { padding: 1rem 1.5rem; }
+      .page-hero-inner, .content-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .hero-image-wrap { height: 240px; }
+      .pillars-inner { grid-template-columns: 1fr; }
+      .key-terms { grid-template-columns: 1fr; }
+      .hero-deco-letter { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <a href="index.html" class="title">Jazz</a>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="hero-rings">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="hero-deco-letter">D</div>
+  <div class="page-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Home</a> &nbsp;/&nbsp; Definition</p>
+    <h1><em>What Is</em>Jazz?</h1>
+    <p class="page-hero-sub">Improvisation, swing, and individual voice — the three pillars of a living art form.</p>
+  </div>
+</section>
+
+<!-- HERO IMAGE -->
+<div class="hero-image-wrap">
+  <img src="images/pic07.png" alt="Jazz Definition" onerror="this.style.display='none'" />
+  <div class="hero-image-fallback">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Musical notes -->
+      <circle cx="60" cy="130" r="18" fill="rgba(201,168,76,1)"/>
+      <rect x="76" y="50" width="6" height="82" fill="rgba(201,168,76,1)"/>
+      <rect x="76" y="50" width="40" height="6" fill="rgba(201,168,76,1)"/>
+      <circle cx="140" cy="150" r="18" fill="rgba(201,168,76,0.7)"/>
+      <rect x="156" y="70" width="6" height="82" fill="rgba(201,168,76,0.7)"/>
+      <rect x="120" y="70" width="42" height="6" fill="rgba(201,168,76,0.7)"/>
+    </svg>
+  </div>
+</div>
+
+<!-- THREE PILLARS -->
+<div class="pillars-strip">
+  <div class="pillars-inner">
+    <div class="pillar">
+      <p class="pillar-num">Pillar 01</p>
+      <h3>Improvisation</h3>
+      <p>Jazz musicians compose in the moment — creating new melodies in real time over the song's chord progression. No performance is ever the same.</p>
+    </div>
+    <div class="pillar">
+      <p class="pillar-num">Pillar 02</p>
+      <h3>Swing &amp; Syncopation</h3>
+      <p>Accenting off-beats and stretching the first of each pair of eighth notes creates the irresistible forward momentum that defines the jazz groove.</p>
+    </div>
+    <div class="pillar">
+      <p class="pillar-num">Pillar 03</p>
+      <h3>Individual Voice</h3>
+      <p>Every jazz musician cultivates a unique, identifiable tone — growls, bends, and slurs that make their instrument sound like an extension of their own voice.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content-wrap">
+
+  <!-- Intro -->
+  <p class="intro-block fade-in">
+    Jazz is a complex, expressive musical genre that originated in the United States, specifically in the African American communities of New Orleans, during the late nineteenth and early twentieth centuries. At its core, defining jazz is notoriously difficult because it is not a single, static style of music, but rather a constantly evolving family of genres. A comprehensive definition centers on three fundamental pillars: improvisation, syncopated rhythms, and a unique approach to harmony that emphasizes individual expression over rigid uniformity.
+  </p>
+
+  <div class="divider"></div>
+
+  <!-- Section 1: Improvisation -->
+  <div class="content-section fade-in">
+    <p class="content-section-label">Pillar One</p>
+    <h2>The Art of <em>Improvisation</em></h2>
+    <p>The most defining characteristic of jazz is improvisation. Unlike classical European music, where performers strictly adhere to a written score, jazz musicians compose in the moment. A jazz performance typically involves playing a pre-determined melody — known as the "head" — followed by a series of improvised solos over the song's chord progression.</p>
+    <p>During these solos, the musician spontaneously creates new melodies, engaging in a real-time musical conversation with the rest of the band. This reliance on improvisation means that a jazz piece is never played exactly the same way twice. The music is a living, breathing entity that reflects the mood, environment, and specific interactions of the performers at that exact moment.</p>
+  </div>
+
+  <div class="pull-quote fade-in">
+    <p>Man, if you gotta ask what it is, you'll never know.</p>
+    <cite>— Louis Armstrong, on jazz</cite>
+  </div>
+
+  <!-- Section 2: Rhythm -->
+  <div class="content-section fade-in">
+    <p class="content-section-label">Pillar Two</p>
+    <h2>Swing, <em>Syncopation</em> &amp; Rhythm</h2>
+    <p>The second foundational element of jazz is its rhythmic feel, primarily characterized by syncopation and the concept of "swing." Syncopation involves shifting the musical accent away from the strong beats of a measure onto the weaker off-beats — creating a sense of forward momentum, surprise, and rhythmic tension.</p>
+    <p>"Swing" is a specific type of rhythmic lilt born from this syncopation, where a pair of eighth notes is played with the first note held slightly longer than the second, producing a propelling, danceable groove. Even in avant-garde or free jazz subgenres where a traditional swing feel is abandoned, complex interactive polyrhythms remain a vital component of the music's DNA.</p>
+  </div>
+
+  <!-- Key Terms -->
+  <dl class="key-terms">
+    <div class="key-term">
+      <dt>Syncopation</dt>
+      <dd>Placing rhythmic accents on the off-beats rather than the main beats of a measure, creating tension and drive.</dd>
+    </div>
+    <div class="key-term">
+      <dt>The Swing Feel</dt>
+      <dd>Elongating the first eighth note of each pair to create a lilting, forward-propelling groove that defines jazz rhythm.</dd>
+    </div>
+    <div class="key-term">
+      <dt>Polyrhythm</dt>
+      <dd>Multiple contrasting rhythmic patterns sounding simultaneously — inherited from West African drumming traditions.</dd>
+    </div>
+    <div class="key-term">
+      <dt>The Head</dt>
+      <dd>The composed melody that opens and closes a jazz performance, framing the improvised solos in the middle.</dd>
+    </div>
+  </dl>
+
+  <div class="divider"></div>
+
+  <!-- Section 3: Harmony & Voice -->
+  <div class="content-section fade-in">
+    <p class="content-section-label">Pillar Three</p>
+    <h2>Harmony, Blues &amp; <em>Individual Voice</em></h2>
+    <p>The third crucial aspect of defining jazz lies in its harmonic language and tonal individuality. Jazz harmony is heavily influenced by the blues, frequently employing "blue notes" — flattened thirds, fifths, and sevenths — that add emotional depth and vocal-like qualities to instrumental playing.</p>
+    <p>Furthermore, jazz musicians actively seek out a unique, identifiable tone on their instruments. Instead of striving for the homogenous, pure sound often prized in classical orchestras, jazz artists utilize growls, bends, slurs, and varied embouchure techniques to make their instruments sound like an extension of their own speaking or singing voice. This emphasis on distinct personal expression is what separates a jazz musician from a mere music performer.</p>
+  </div>
+
+  <div class="pull-quote fade-in">
+    <p>Jazz is not just music — it's a way of life, it's a way of looking at the world.</p>
+    <cite>— Nina Simone</cite>
+  </div>
+
+</div><!-- /content-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <span>&copy; Untitled. All rights reserved.</span>
+  <span>Design: <a href="https://www.facebook.com/mhtuan.244/">Minh Tuan</a></span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in, .pillar, .key-term').forEach((el, i) => {
+    if (el.classList.contains('pillar') || el.classList.contains('key-term')) {
+      el.style.transitionDelay = `${(i % 3) * 0.1}s`;
+    }
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>

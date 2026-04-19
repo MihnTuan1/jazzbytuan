@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Elements & Diversity – Jazz by Minh Tuan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold:   #c9a84c;
+      --gold2:  #e8c97a;
+      --cream:  #f5efe2;
+      --ink:    #12100e;
+      --ink2:   #1e1b17;
+      --smoke:  #2e2a24;
+      --muted:  #7a7060;
+      --accent: #b03a2e;
+    }
+ 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+ 
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+      z-index: 999;
+      opacity: .45;
+    }
+ 
+    /* ── HEADER ── */
+    #header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: linear-gradient(to bottom, rgba(18,16,14,.95), transparent);
+      backdrop-filter: blur(2px);
+    }
+    #header .title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: .04em;
+    }
+    #header nav a {
+      color: var(--cream);
+      text-decoration: none;
+      font-size: .85rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      opacity: .75;
+      transition: opacity .2s;
+    }
+    #header nav a:hover { opacity: 1; color: var(--gold); }
+ 
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, #2a1f0e 0%, var(--ink) 70%);
+      overflow: hidden;
+    }
+    .hero-ornament {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,.12);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      animation: pulse 6s ease-in-out infinite;
+    }
+    .hero-ornament:nth-child(2) { width: 700px; height: 700px; animation-delay: 2s; }
+    .hero-ornament:nth-child(3) { width: 900px; height: 900px; animation-delay: 4s; }
+    @keyframes pulse {
+      0%,100% { opacity: .4; transform: translate(-50%,-50%) scale(1); }
+      50% { opacity: .8; transform: translate(-50%,-50%) scale(1.03); }
+    }
+    .hero-label {
+      font-size: .75rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 900;
+      line-height: 1.05;
+      position: relative;
+    }
+    .hero h1 em {
+      display: block;
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero p {
+      max-width: 540px;
+      margin: 2rem auto 0;
+      color: rgba(245,239,226,.65);
+      font-size: 1.05rem;
+      position: relative;
+    }
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .scroll-hint span { width: 1px; height: 50px; background: linear-gradient(to bottom, var(--gold), transparent); animation: drip 2s ease-in-out infinite; }
+    @keyframes drip { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(.6)} }
+ 
+    /* ── SECTION WRAPPER ── */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+    .section-label {
+      font-size: .72rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .75rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .section-body {
+      color: rgba(245,239,226,.7);
+      font-size: 1.02rem;
+      max-width: 680px;
+    }
+ 
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      opacity: .3;
+    }
+ 
+    /* ══════════════════════════════════════
+       IMAGE SLIDER
+    ══════════════════════════════════════ */
+    .slider-section {
+      padding: 5rem 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, var(--ink) 0%, var(--ink2) 50%, var(--ink) 100%);
+    }
+    .slider-header {
+      max-width: 1100px;
+      margin: 0 auto 3rem;
+      padding: 0 2rem;
+    }
+    .slider-wrapper {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+    .slider-track {
+      display: flex;
+      transition: transform .7s cubic-bezier(.77,0,.18,1);
+    }
+    .slide {
+      min-width: 100%;
+      position: relative;
+      height: 520px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.05);
+      transition: transform 1.2s ease;
+    }
+    .slide.active .slide-bg { transform: scale(1); }
+    .slide::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(12,10,8,.92) 0%, rgba(12,10,8,.2) 50%, transparent 100%);
+    }
+    .slide-content {
+      position: relative;
+      z-index: 2;
+      padding: 3rem 4rem;
+      max-width: 700px;
+    }
+    .slide-num {
+      font-size: .7rem;
+      letter-spacing: .3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: .5rem;
+    }
+    .slide-content h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      margin-bottom: .75rem;
+    }
+    .slide-content p {
+      color: rgba(245,239,226,.75);
+      font-size: .95rem;
+      line-height: 1.65;
+    }
+    /* Slider controls */
+    .slider-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .slider-btn {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,.4);
+      background: transparent;
+      color: var(--gold);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      transition: all .25s;
+    }
+    .slider-btn:hover { background: rgba(201,168,76,.15); border-color: var(--gold); }
+    .slider-dots { display: flex; gap: .6rem; }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+      cursor: pointer;
+      transition: all .3s;
+    }
+    .dot.active { background: var(--gold); transform: scale(1.3); }
+ 
+    /* ══════════════════════════════════════
+       ELEMENTS GRID
+    ══════════════════════════════════════ */
+    .elements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2px;
+      background: rgba(201,168,76,.08);
+      border: 1px solid rgba(201,168,76,.1);
+      margin-top: 3rem;
+    }
+    .element-card {
+      background: var(--ink2);
+      padding: 2.5rem 2rem;
+      transition: background .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .element-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--gold);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform .4s ease;
+    }
+    .element-card:hover { background: #1e1b17; }
+    .element-card:hover::before { transform: scaleY(1); }
+    .element-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .element-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: .75rem;
+      color: var(--gold2);
+    }
+    .element-card p {
+      font-size: .9rem;
+      color: rgba(245,239,226,.62);
+      line-height: 1.7;
+    }
+ 
+    /* ══════════════════════════════════════
+       COLLAPSIBLE SECTION
+    ══════════════════════════════════════ */
+    .accordion-section { padding: 5rem 0; background: var(--ink); }
+    .accordion-container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+    .accordion-header-block { margin-bottom: 3rem; }
+ 
+    .accordion-item {
+      border-bottom: 1px solid rgba(201,168,76,.18);
+      overflow: hidden;
+    }
+    .accordion-trigger {
+      width: 100%;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.6rem 0;
+      cursor: pointer;
+      text-align: left;
+      gap: 1rem;
+    }
+    .accordion-trigger-left {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .acc-num {
+      font-size: .65rem;
+      letter-spacing: .2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      min-width: 28px;
+    }
+    .acc-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--cream);
+      transition: color .25s;
+    }
+    .accordion-trigger:hover .acc-title { color: var(--gold); }
+    .acc-icon {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,.35);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: all .35s;
+      color: var(--gold);
+      font-size: .9rem;
+    }
+    .accordion-item.open .acc-icon {
+      background: var(--gold);
+      color: var(--ink);
+      transform: rotate(45deg);
+    }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .5s cubic-bezier(.77,0,.18,1), padding .4s;
+    }
+    .accordion-item.open .accordion-body { max-height: 600px; }
+    .accordion-body-inner {
+      padding: 0 0 2rem 2.5rem;
+      color: rgba(245,239,226,.68);
+      font-size: .97rem;
+      line-height: 1.8;
+      border-left: 1px solid rgba(201,168,76,.2);
+      margin-left: .5rem;
+    }
+    .accordion-body-inner ul {
+      list-style: none;
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+    .accordion-body-inner ul li::before {
+      content: '♩ ';
+      color: var(--gold);
+      font-size: .8rem;
+    }
+ 
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2.5rem 2rem;
+      border-top: 1px solid rgba(201,168,76,.15);
+      font-size: .8rem;
+      color: var(--muted);
+      letter-spacing: .05em;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+ 
+    /* ── SLIDE BACKGROUNDS (SVG placeholders) ── */
+    .slide-bg-1 { background-color: #1a0f05; background-image:
+      radial-gradient(ellipse at 30% 60%, #3d1f05 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, #2a1500 0%, transparent 50%); }
+    .slide-bg-2 { background-color: #080d12; background-image:
+      radial-gradient(ellipse at 70% 50%, #0a1e30 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, #05111c 0%, transparent 50%); }
+    .slide-bg-3 { background-color: #100a14; background-image:
+      radial-gradient(ellipse at 50% 40%, #220f2a 0%, transparent 60%); }
+    .slide-bg-4 { background-color: #0e0e08; background-image:
+      radial-gradient(ellipse at 40% 60%, #201e00 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 10%, #151300 0%, transparent 50%); }
+    .slide-bg-5 { background-color: #0d0805; background-image:
+      radial-gradient(ellipse at 60% 50%, #2a1204 0%, transparent 60%); }
+ 
+    /* Instrument silhouette SVGs embedded in slide backgrounds */
+    .slide-illustration {
+      position: absolute;
+      right: 5%;
+      bottom: 0;
+      height: 85%;
+      opacity: .18;
+      z-index: 1;
+      pointer-events: none;
+    }
+ 
+    @media (max-width: 640px) {
+      #header { padding: 1rem 1.5rem; }
+      .slide { height: 400px; }
+      .slide-content { padding: 2rem 1.5rem; }
+      .section { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+ 
+<!-- ── HEADER ── -->
+<header id="header">
+  <a href="index.html" class="title">Jazz</a>
+  <nav>
+    <ul style="list-style:none;display:flex;gap:2rem;">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#elements">Elements</a></li>
+      <li><a href="#diversity">Diversity</a></li>
+    </ul>
+  </nav>
+</header>
+ 
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-ornament"></div>
+  <div class="hero-ornament"></div>
+  <div class="hero-ornament"></div>
+  <p class="hero-label">Jazz by Minh Tuan</p>
+  <h1>Elements &amp;<em>Diversity</em></h1>
+  <p>A deep exploration of what makes jazz the most spontaneous, expressive, and culturally rich musical tradition in the world.</p>
+  <div class="scroll-hint"><span></span></div>
+</section>
+ 
+<!-- ── IMAGE SLIDER ── -->
+<div class="slider-section">
+  <div class="slider-header">
+    <p class="section-label">The Sounds Within</p>
+    <h2 class="section-title">Core <em>Elements</em> of Jazz</h2>
+  </div>
+ 
+  <div class="slider-wrapper">
+    <div class="slider-track" id="sliderTrack">
+ 
+      <!-- SLIDE 1 -->
+      <div class="slide active">
+        <div class="slide-bg slide-bg-1"></div>
+        <svg class="slide-illustration" viewBox="0 0 200 400" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <!-- Trumpet silhouette -->
+          <ellipse cx="100" cy="50" rx="15" ry="40"/>
+          <rect x="85" y="90" width="30" height="150"/>
+          <ellipse cx="100" cy="250" rx="50" ry="20"/>
+          <rect x="50" y="240" width="100" height="20" rx="10"/>
+          <ellipse cx="100" cy="270" rx="70" ry="30"/>
+        </svg>
+        <div class="slide-content">
+          <p class="slide-num">01 / 05</p>
+          <h3>Improvisation</h3>
+          <p>The heartbeat of jazz. Musicians spontaneously compose melodies in real time, responding to each other and to the emotional current of the moment. No two performances are ever identical — the music breathes and lives anew each night.</p>
+        </div>
+      </div>
+ 
+      <!-- SLIDE 2 -->
+      <div class="slide">
+        <div class="slide-bg slide-bg-2"></div>
+        <svg class="slide-illustration" viewBox="0 0 200 400" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <!-- Saxophone silhouette -->
+          <rect x="90" y="20" width="20" height="60" rx="10"/>
+          <path d="M100 80 Q140 120 140 200 Q140 300 80 350 Q60 370 60 360 Q60 330 80 310 Q110 280 110 200 Q110 140 80 100 Z" fill="white"/>
+          <ellipse cx="68" cy="355" rx="20" ry="12"/>
+        </svg>
+        <div class="slide-content">
+          <p class="slide-num">02 / 05</p>
+          <h3>Syncopation &amp; Swing</h3>
+          <p>Jazz defies the predictable. By accenting the "off" beats and creating rhythmic tension against the underlying pulse, jazz generates the irresistible forward motion known as "swing" — a feeling that compels listeners to move.</p>
+        </div>
+      </div>
+ 
+      <!-- SLIDE 3 -->
+      <div class="slide">
+        <div class="slide-bg slide-bg-3"></div>
+        <svg class="slide-illustration" viewBox="0 0 200 400" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <!-- Piano keys silhouette -->
+          <rect x="20" y="100" width="160" height="200" rx="5"/>
+          <rect x="20" y="100" width="160" height="140" rx="5" fill="rgba(255,255,255,0.1)"/>
+          <rect x="40" y="100" width="12" height="90" rx="3" fill="#12100e"/>
+          <rect x="65" y="100" width="12" height="90" rx="3" fill="#12100e"/>
+          <rect x="103" y="100" width="12" height="90" rx="3" fill="#12100e"/>
+          <rect x="128" y="100" width="12" height="90" rx="3" fill="#12100e"/>
+          <rect x="153" y="100" width="12" height="90" rx="3" fill="#12100e"/>
+        </svg>
+        <div class="slide-content">
+          <p class="slide-num">03 / 05</p>
+          <h3>Extended Harmony</h3>
+          <p>Where classical music resolves, jazz lingers. Jazz harmony extends chords to the 7th, 9th, 11th, and 13th degrees, creating lush, ambiguous colors. These rich voicings give jazz its sophisticated, emotionally complex character.</p>
+        </div>
+      </div>
+ 
+      <!-- SLIDE 4 -->
+      <div class="slide">
+        <div class="slide-bg slide-bg-4"></div>
+        <svg class="slide-illustration" viewBox="0 0 200 400" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <!-- Double bass silhouette -->
+          <ellipse cx="100" cy="200" rx="55" ry="90"/>
+          <ellipse cx="100" cy="120" rx="35" ry="50"/>
+          <rect x="96" y="50" width="8" height="80"/>
+          <rect x="94" y="30" width="12" height="25" rx="5"/>
+          <ellipse cx="100" cy="320" rx="55" ry="50"/>
+          <rect x="96" y="370" width="8" height="30"/>
+        </svg>
+        <div class="slide-content">
+          <p class="slide-num">04 / 05</p>
+          <h3>Call and Response</h3>
+          <p>Rooted in African musical tradition and echoed in the blues, call and response is a musical conversation. A phrase is "called" by one instrument and another "responds" — a dialogue that shapes the collective storytelling of the jazz ensemble.</p>
+        </div>
+      </div>
+ 
+      <!-- SLIDE 5 -->
+      <div class="slide">
+        <div class="slide-bg slide-bg-5"></div>
+        <svg class="slide-illustration" viewBox="0 0 200 400" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <!-- Drum kit silhouette -->
+          <ellipse cx="100" cy="300" rx="70" ry="30"/>
+          <rect x="30" y="270" width="140" height="30"/>
+          <ellipse cx="60" cy="220" rx="35" ry="15"/>
+          <rect x="25" y="205" width="70" height="15"/>
+          <ellipse cx="150" cy="220" rx="30" ry="13"/>
+          <rect x="120" y="207" width="60" height="13"/>
+          <ellipse cx="100" cy="180" rx="25" ry="10"/>
+        </svg>
+        <div class="slide-content">
+          <p class="slide-num">05 / 05</p>
+          <h3>Polyrhythm</h3>
+          <p>Multiple rhythmic layers coexist simultaneously. The drummer might hold a steady pulse on the hi-hat while the bass and piano weave contrasting rhythms beneath a soloist's melodic line — a rich, interlocking complexity borrowed from West African drumming traditions.</p>
+        </div>
+      </div>
+ 
+    </div><!-- /slider-track -->
+  </div><!-- /slider-wrapper -->
+ 
+  <div class="slider-controls">
+    <button class="slider-btn" id="prevBtn" aria-label="Previous">&#8592;</button>
+    <div class="slider-dots" id="sliderDots"></div>
+    <button class="slider-btn" id="nextBtn" aria-label="Next">&#8594;</button>
+  </div>
+</div>
+ 
+<!-- ── ELEMENTS GRID ── -->
+<section class="section" id="elements">
+  <p class="section-label">Building Blocks</p>
+  <h2 class="section-title">What Makes Jazz <em>Jazz</em></h2>
+  <p class="section-body">Every jazz performance is assembled from a vocabulary of elements that musicians have refined over more than a century. These aren't rigid rules — they're tools for conversation.</p>
+ 
+  <div class="elements-grid">
+    <div class="element-card">
+      <div class="element-icon">🎷</div>
+      <h3>The Blue Note</h3>
+      <p>Flattened 3rd, 5th, or 7th scale degrees that create a characteristic melancholic or soulful tension, inherited directly from African-American blues traditions.</p>
+    </div>
+    <div class="element-card">
+      <div class="element-icon">🥁</div>
+      <h3>The Rhythm Section</h3>
+      <p>Piano, bass, and drums form the harmonic and rhythmic foundation. Their dynamic interplay — "comping" and "trading fours" — gives soloists a living, breathing canvas.</p>
+    </div>
+    <div class="element-card">
+      <div class="element-icon">🎺</div>
+      <h3>The Head</h3>
+      <p>The main melody or "head" frames each jazz standard. It's stated at the beginning and end, with improvised solos filling the vast, open middle — a formal structure that enables maximum freedom.</p>
+    </div>
+    <div class="element-card">
+      <div class="element-icon">🎸</div>
+      <h3>Comping</h3>
+      <p>Accompaniment in jazz is not passive. Pianists and guitarists "comp" — playing sparse, rhythmically varied chords that react to and support the soloist in real time.</p>
+    </div>
+    <div class="element-card">
+      <div class="element-icon">🎵</div>
+      <h3>Trading Fours</h3>
+      <p>Musicians swap 4-bar solos in rapid succession — a thrilling conversation that showcases each player's voice and keeps audiences rapt with anticipation.</p>
+    </div>
+    <div class="element-card">
+      <div class="element-icon">🎤</div>
+      <h3>Scat Singing</h3>
+      <p>Vocalists treat the voice as an instrument, improvising with nonsense syllables and wordless sounds to create melodic lines with the same spontaneity as a horn solo.</p>
+    </div>
+  </div>
+</section>
+ 
+<div class="divider"></div>
+ 
+<!-- ── COLLAPSIBLE DIVERSITY SECTION ── -->
+<section class="accordion-section" id="diversity">
+  <div class="accordion-container">
+    <div class="accordion-header-block">
+      <p class="section-label">One Music, Many Voices</p>
+      <h2 class="section-title">The Remarkable <em>Diversity</em> of Jazz</h2>
+      <p class="section-body" style="margin-top:1rem;">Jazz has never stood still. Each generation reimagined it, absorbing new cultures and technologies to birth entirely new subgenres. Explore the branches of the jazz family tree below.</p>
+    </div>
+ 
+    <div class="accordion-item open" data-accordion>
+      <button class="accordion-trigger" aria-expanded="true">
+        <span class="accordion-trigger-left">
+          <span class="acc-num">01</span>
+          <span class="acc-title">New Orleans &amp; Dixieland Jazz (1900s–1920s)</span>
+        </span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>The original jazz, born in New Orleans' vibrant cultural stew. Characterized by collective improvisation — multiple horns improvising simultaneously over a driving rhythm — this style was joyful, brassy, and rooted in parade music and funeral marches.</p>
+          <ul>
+            <li>Key figures: Louis Armstrong, Jelly Roll Morton, King Oliver</li>
+            <li>Instruments: Cornet, clarinet, trombone, tuba, banjo</li>
+            <li>Hallmarks: Polyphonic improvisation, march-like tempos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="accordion-item" data-accordion>
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="accordion-trigger-left">
+          <span class="acc-num">02</span>
+          <span class="acc-title">Swing &amp; Big Band Era (1930s–1940s)</span>
+        </span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>Jazz went mainstream. Large orchestras of 15–20 musicians played arranged compositions with a relentless, danceable groove. Swing was the pop music of its era — filling ballrooms across America and giving birth to swing dancing.</p>
+          <ul>
+            <li>Key figures: Duke Ellington, Count Basie, Benny Goodman, Ella Fitzgerald</li>
+            <li>Instruments: Full brass, woodwind, and rhythm sections</li>
+            <li>Hallmarks: Written arrangements, soloists over big band, 4/4 swing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="accordion-item" data-accordion>
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="accordion-trigger-left">
+          <span class="acc-num">03</span>
+          <span class="acc-title">Bebop (1940s)</span>
+        </span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>A deliberate artistic rebellion. Young musicians tired of commercial swing created a complex, fast, harmonically advanced style not meant for dancing. Bebop demanded active listening and elevated jazz to an art music deserving serious study.</p>
+          <ul>
+            <li>Key figures: Charlie Parker, Dizzy Gillespie, Thelonious Monk, Bud Powell</li>
+            <li>Hallmarks: Rapid tempos, complex chord changes, virtuosic improvisation</li>
+            <li>Legacy: The grammar of modern jazz harmony</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="accordion-item" data-accordion>
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="accordion-trigger-left">
+          <span class="acc-num">04</span>
+          <span class="acc-title">Cool Jazz &amp; Hard Bop (1950s)</span>
+        </span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>Two parallel responses to bebop. Cool jazz — associated with West Coast players — was restrained, lyrical, and influenced by European classical music. Hard bop, born in New York, reconnected with blues, gospel, and African-American church music for a grittier, more soulful sound.</p>
+          <ul>
+            <li>Cool: Miles Davis, Dave Brubeck, Chet Baker, Gerry Mulligan</li>
+            <li>Hard Bop: Art Blakey, Clifford Brown, Horace Silver, Sonny Rollins</li>
+            <li>Hallmarks: Cool — relaxed tempos, modal influence; Hard Bop — blues and gospel feel</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="accordion-item" data-accordion>
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="accordion-trigger-left">
+          <span class="acc-num">05</span>
+          <span class="acc-title">Modal &amp; Free Jazz (1960s)</span>
+        </span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>Miles Davis's "Kind of Blue" (1959) liberated jazz from rapid chord changes by grounding it in scales (modes). This opened vast new melodic space. Free jazz, pioneered by Ornette Coleman, abolished harmonic and rhythmic conventions entirely, pursuing pure expression and collective spontaneity.</p>
+          <ul>
+            <li>Modal: Miles Davis, John Coltrane, Bill Evans</li>
+            <li>Free: Ornette Coleman, Cecil Taylor, Albert Ayler</li>
+            <li>Hallmarks: Modal — spacious, lyrical solos; Free — atonality, extreme expression</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="accordion-item" data-accordion>
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="accordion-trigger-left">
+          <span class="acc-num">06</span>
+          <span class="acc-title">Fusion, Latin Jazz &amp; Contemporary (1970s–Present)</span>
+        </span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>Jazz crossed borders — electric instruments, rock rhythms, funk grooves, Brazilian samba and bossa nova, Cuban son, and eventually hip-hop all merged with jazz vocabulary to create a sprawling global tradition that continues evolving today.</p>
+          <ul>
+            <li>Fusion: Miles Davis, Weather Report, Herbie Hancock, Chick Corea</li>
+            <li>Latin Jazz: Tito Puente, Chucho Valdés, Irakere</li>
+            <li>Contemporary: Robert Glasper, Kamasi Washington, Esperanza Spalding</li>
+            <li>Hallmarks: Electric instruments, cross-genre rhythms, global influences</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+ 
+  </div><!-- /accordion-container -->
+</section>
+ 
+<!-- ── FOOTER ── -->
+<footer>
+  <p>&copy; Jazz by Minh Tuan &nbsp;·&nbsp; All rights reserved &nbsp;·&nbsp; Design: <a href="https://www.facebook.com/mhtuan.244/">Minh Tuan</a></p>
+</footer>
+ 
+<script>
+  /* ── SLIDER ── */
+  const track = document.getElementById('sliderTrack');
+  const slides = track.querySelectorAll('.slide');
+  const dotsContainer = document.getElementById('sliderDots');
+  let current = 0;
+  let autoTimer;
+ 
+  // Build dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', `Slide ${i + 1}`);
+    dot.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(dot);
+  });
+ 
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    dotsContainer.children[current].classList.remove('active');
+    current = (idx + slides.length) % slides.length;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    slides[current].classList.add('active');
+    dotsContainer.children[current].classList.add('active');
+    resetAuto();
+  }
+ 
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+ 
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => goTo(current + 1), 5500);
+  }
+  resetAuto();
+ 
+  /* ── ACCORDION ── */
+  document.querySelectorAll('[data-accordion]').forEach(item => {
+    const trigger = item.querySelector('.accordion-trigger');
+    trigger.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      // close all
+      document.querySelectorAll('[data-accordion]').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'false');
+      });
+      // open clicked if it was closed
+      if (!isOpen) {
+        item.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+ 
+  /* ── FADE-IN ON SCROLL ── */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+ 
+  document.querySelectorAll('.element-card, .accordion-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity .6s ease, transform .6s ease';
+    observer.observe(el);
+  });
+</script>
+ 
+</body>
+</html>
